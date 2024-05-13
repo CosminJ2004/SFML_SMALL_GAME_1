@@ -5,10 +5,10 @@ void Game::initializeVariables()
 	this->window = nullptr;
     //game logic
     this->points = 0;
-    this->health = 100;
+    this->health = 1000;
     this->enemySpawnTimerMax = 20.f;
     this->enemySpawnTimer= this->enemySpawnTimerMax;
-    this->maxEnemies = 10;
+    this->maxEnemies = 1;
     this->mouseHeld = false;
     this->endGame = false;
 
@@ -18,46 +18,154 @@ void Game::initializeVariables()
 
 void Game::initWindow()
 {
-	this->videoMode.height = 600;
-	this->videoMode.width = 800;
+	this->videoMode.height = 800;
+	this->videoMode.width = 1200;
  
-    this->window=new sf::RenderWindow(sf::VideoMode(800, 600), "My first game", sf::Style::Titlebar | sf::Style::Close | sf::Style::Resize);
+    this->window=new sf::RenderWindow(sf::VideoMode(1200, 800), "My first game", sf::Style::Titlebar | sf::Style::Close | sf::Style::Resize);
     this->window->setFramerateLimit(60);
 }
-void Game::initEnemies()
+void Game::initEnemies_top()
 {
-
-    this->enemy.setPosition(10.f,10.f);
-    this->enemy.setSize(sf::Vector2f(100.f, 100.f));
+    texture1.loadFromFile("Textures/enemy1.png");
     
-    this->enemy.setFillColor(sf::Color::Cyan);
-    //this->enemy.setOutlineColor(sf::Color::Green);
-    //this->enemy.setOutlineThickness(1.f);
+
+    this->enemy_top.setPosition(10.f, 10.f);
+    //this->enemy_top.setSize(sf::Vector2f(100.f, 100.f));
+
+  //  this->enemy_top.setFillColor(sf::Color::Cyan);
+    //this->enemy_top.setOutlineColor(sf::Color::Green);
+    //this->enemy_top.setOutlineThickness(1.f);
 
 
 }
+void Game::initEnemies_bottom()
+{
+    texture2.loadFromFile("Textures/enemy2.png");
+    this->enemy_bottom.setPosition(this->window->getSize().x, this->window->getSize().y);
+   // this->enemy_bottom.setSize(sf::Vector2f(100.f, 100.f));
+
+  //  this->enemy_bottom.setFillColor(sf::Color::Cyan);
+    //this->enemy_top.setOutlineColor(sf::Color::Green);
+    //this->enemy_top.setOutlineThickness(1.f);
+
+
+}
+void Game::initEnemies_left()
+{
+    texture3.loadFromFile("Textures/enemy3.png");
+    this->enemy_left.setPosition(10.f, 10.f);
+
+   // this->enemy_left.setSize(sf::Vector2f(100.f, 100.f));
+
+   // this->enemy_left.setFillColor(sf::Color::Cyan);
+    //this->enemy_top.setOutlineColor(sf::Color::Green);
+    //this->enemy_top.setOutlineThickness(1.f);
+
+
+}
+void Game::initEnemies_right()
+{
+    texture4.loadFromFile("Textures/enemy4.png");
+    texture5.loadFromFile("Textures/enemy5.png");
+    texture6.loadFromFile("Textures/enemy6.png");
+    this->enemy_right.setPosition(10.f,10.f);
+  //  this->enemy_right.setSize(sf::Vector2f(100.f, 100.f));
+
+  //  this->enemy_right.setFillColor(sf::Color::Cyan);
+    //this->enemy_top.setOutlineColor(sf::Color::Green);
+    //this->enemy_top.setOutlineThickness(1.f);
+
+
+}
+
 void Game::initFonts()
 {
-    if (this->font.loadFromFile("Fonts/Dosis-Light.ttf"))
+    if (!this->font.loadFromFile("Fonts/Dosis-Light.ttf"))
     {
         std::cout << "ERROR::GAME:: failed to load fonts" << "\n";
     }
 }
 void Game::initText()
 {
+    std::string pointsString = "Points: " + std::to_string(this->points);
     this->uiText.setFont(this->font);
     this->uiText.setCharacterSize(30);
     this->uiText.setFillColor(sf::Color::White);
-    this->uiText.setString("NONE");
+   
+    this->uiText.setString(pointsString);
+    this->uiText.setPosition(15.f, 15.f);
+    this->uiText.setStyle(sf::Text::Bold);
 }
+void Game::initScore()
+{
+    this->points=0;
+    
+}
+void Game::initMusic()
+{
+    if (!this->music.openFromFile("Music/music.mp3")) {
+        std::cout << "Failed to load music" << std::endl;
+
+    }
+    else {
+        music.play(); // Play the music
+    }
+}
+void Game::initPlayer()
+{
+    this->player = new Player();
+    this->player->setPosition(10.f, 10.f);
+    this->player->setHp(100);
+
+    
+
+}
+void Game::initWorld()
+{
+    if (!this->worldBackgroundTex.loadFromFile("Textures/background2.png"))
+    {
+        std::cout << "ERROR::GAME::COULD NOT LOAD BACKGROUND TEXTURE" << "\n";
+    }
+    sf::Vector2u windowSize = this->window->getSize();
+
+    // Get the size of the texture
+    sf::Vector2u textureSize = this->worldBackgroundTex.getSize();
+
+    // Calculate the scale factors to fit the background to the window
+    float scaleX = (float)windowSize.x / textureSize.x;
+    float scaleY = (float)windowSize.y / textureSize.y;
+
+    // Set the scale of the background
+    this->worldBackground.setScale(scaleX, scaleY);
+    this->worldBackground.setTexture(this->worldBackgroundTex);
+}
+
+void Game::initHealthBar()
+{
+    this->playerHpBar.setFillColor(sf::Color::Red);
+    this->playerHpBar.setPosition(10.f, 10.f);
+    this->playerHpBar.setSize(sf::Vector2f(10.f * this->player->getHpMax(), 10.f));
+
+
+
+}
+
 //const and dest
 Game::Game()
 {
 	this->initializeVariables();
 	this->initWindow();
-    this->initEnemies();
+    this->initPlayer();
+    this->initEnemies_top();
+    this->initEnemies_bottom();
+    this->initEnemies_left();
+    this->initEnemies_right();
+    this->initWorld();
     this->initFonts();
     this->initText();
+    this->initMusic();
+    this->initHealthBar();
+   
 
 
 }
@@ -80,6 +188,7 @@ const bool Game::getEndGame() const
 
 
 
+
 void Game::updateMousePositions()
 {
   //return void
@@ -87,7 +196,19 @@ void Game::updateMousePositions()
     this->mousePosWindow = sf::Mouse::getPosition(*this->window);
     this->mousePosView = this->window->mapPixelToCoords(this->mousePosWindow);
 }
-
+void Game::updateInput()
+{
+    //Move player
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+        this->player->move(-1.f, 0.f);
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+        this->player->move(1.f, 0.f);
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+        this->player->move(0.f, -1.f);
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+        this->player->move(0.f, 1.f);
+}
+/*
 void Game::updateText()
 {
     std::stringstream ss;
@@ -97,22 +218,45 @@ void Game::updateText()
     this->uiText.setString(ss.str());
 
 }
+*/
+void Game::updateHealthBar()
+{
+    this->playerHpBar.setFillColor(sf::Color::Red);
+    this->playerHpBar.setPosition(10.f, 10.f);
+    this->playerHpBar.setSize(sf::Vector2f(10.f * this->player->getHp(), 10.f));
 
-void Game::updateEnemies()
+
+
+}
+void Game::updateScore()
+{
+    this->points += 1;
+    std::string pointsString = "Points: " + std::to_string(this->points);
+    this->uiText.setFont(this->font);
+    this->uiText.setCharacterSize(30);
+    this->uiText.setFillColor(sf::Color::White);
+
+    this->uiText.setString(pointsString);
+    this->uiText.setPosition(15.f, 15.f);
+    this->uiText.setStyle(sf::Text::Bold);
+
+}
+void Game::updateEnemies_top()
 {
     /**
     @return void
-    updates the enemy spawn timer and spawns enemies
+    updates the enemy_top spawn timer and spawns enemies
     when the total amount of enemies is smaller than the maximum
     moves the enemies down
     removes the enemies at the edger of the screen
     **/
-    /// update the timer for enemy spawning
-    if (this->enemies.size() < this->maxEnemies)
+    /// update the timer for enemy_top spawning
+    if (this->enemies_top.size() < this->maxEnemies)
     {
         if (this->enemySpawnTimer >= this->enemySpawnTimerMax)
         {//spawn the enemy and reset the timer
-         this->spawnEnemy();
+         this->spawnEnemy_top();
+         
         this->enemySpawnTimer = 0.f;
          }
         else
@@ -120,52 +264,72 @@ void Game::updateEnemies()
     }
     //moving and uodateting enemies
 
-    for( int i=0;i<this->enemies.size();i++)
+    for( int i=0;i<this->enemies_top.size();i++)
     {
         bool deleted = false;
 
-        this->enemies[i].move(0.f, 5.f);
+        this->enemies_top[i].move(0.f, 5.f);
+        
 
-        if (this->enemies[i].getPosition().y>this->window->getSize().y)
+        if (this->enemies_top[i].getPosition().y>this->window->getSize().y)
         {
-            this->enemies.erase(this->enemies.begin() + i);
-            this->health -= 1;
-            std::cout << "Health: " << this->health << "\n";
+            this->enemies_top.erase(this->enemies_top.begin() + i);
+            
 
         }
+        
+       
 
     }
+    bool deleted = false;
+    for (size_t i = 0;i < this->enemies_top.size() && deleted == false;i++)
+    {
+        if (this->enemies_top[i].getGlobalBounds().intersects(this->player->getBounds()))
+        {
+            this->enemies_top.erase(this->enemies_top.begin() + i);
+            deleted=true;
+            std::cout << "hit" << "\n";
+            this->player->loseHp(1);
+            this->updateHealthBar();
+
+        }
+    }
     //check if clicked upon
+    this->mouseHeld == false;
     if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
     {
         if (this->mouseHeld == false)
         {
             this->mouseHeld = true;
             bool deleted = false;
-            for (size_t i = 0; i < this->enemies.size() && deleted == false; i++)
+            for (size_t i = 0; i < this->enemies_top.size() && deleted == false; i++)
             {
               
+                
 
-                if (this->enemies[i].getGlobalBounds().contains(this->mousePosView))
+                if (this->enemies_top[i].getGlobalBounds().contains(this->mousePosView))
                 {
                     
                     //gain points
-                    if(this->enemies[i].getFillColor() == sf::Color::Magenta)
+                    /*
+                    if(this->enemies_top[i].getFillColor() == sf::Color::Magenta)
                     this->points += 10;
-                    else  if (this->enemies[i].getFillColor() == sf::Color::Blue)
+                    else  if (this->enemies_top[i].getFillColor() == sf::Color::Blue)
                         this->points += 7;
-                    else if (this->enemies[i].getFillColor() == sf::Color::Cyan)
+                    else if (this->enemies_top[i].getFillColor() == sf::Color::Cyan)
                         this->points += 5;
-                    else  if (this->enemies[i].getFillColor() == sf::Color::Red)
+                    else  if (this->enemies_top[i].getFillColor() == sf::Color::Red)
                         this->points += 3;
-                    else  if (this->enemies[i].getFillColor() == sf::Color::Green)
+                    else  if (this->enemies_top[i].getFillColor() == sf::Color::Green)
                         this->points += 1;
                     std::cout << "Points: " << this->points << "\n";
+                   */
+
                    
-                    
                     //delete the enemy
+                    this->updateScore();
                     deleted = true;
-                    this->enemies.erase(this->enemies.begin() + i);
+                    this->enemies_top.erase(this->enemies_top.begin() + i);
 
                 }
             }
@@ -179,7 +343,300 @@ void Game::updateEnemies()
 
 
 }
+void Game::updateEnemies_left()
+{
+    /**
+    @return void
+    updates the enemy_top spawn timer and spawns enemies
+    when the total amount of enemies is smaller than the maximum
+    moves the enemies down
+    removes the enemies at the edger of the screen
+    **/
+    /// update the timer for enemy_top spawning
+    if (this->enemies_left.size() < this->maxEnemies)
+    {
+        if (this->enemySpawnTimer >= this->enemySpawnTimerMax)
+        {//spawn the enemy and reset the timer
+            this->spawnEnemy_left();
 
+            this->enemySpawnTimer = 0.f;
+        }
+        else
+            this->enemySpawnTimer += 1.f;
+    }
+    //moving and uodateting enemies
+
+    for (int i = 0;i < this->enemies_left.size();i++)
+    {
+        bool deleted = false;
+
+        this->enemies_left[i].move(5.f, 0.f);
+
+
+        if (this->enemies_left[i].getPosition().x > this->window->getSize().x)
+        {
+            this->enemies_left.erase(this->enemies_left.begin() + i);
+           
+
+        }
+
+    }
+    bool deleted = false;
+    for (size_t i = 0;i < this->enemies_left.size() && deleted == false;i++)
+    {
+        if (this->enemies_left[i].getGlobalBounds().intersects(this->player->getBounds()))
+        {
+            this->enemies_left.erase(this->enemies_left.begin() + i);
+            deleted = true;
+            std::cout << "hit" << "\n";
+            this->player->loseHp(1);
+            this->updateHealthBar();
+        }
+    }
+    //check if clicked upon;
+    this->mouseHeld == false;
+    if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+    {
+        if (this->mouseHeld == false)
+        {
+            this->mouseHeld = true;
+            bool deleted = false;
+            for (size_t i = 0; i < this->enemies_left.size() && deleted == false; i++)
+            {
+
+
+                if (this->enemies_left[i].getGlobalBounds().contains(this->mousePosView))
+                {
+
+                    //gain points
+                    /*
+                    if (this->enemies_left[i].getFillColor() == sf::Color::Magenta)
+                        this->points += 10;
+                    else  if (this->enemies_left[i].getFillColor() == sf::Color::Blue)
+                        this->points += 7;
+                    else if (this->enemies_left[i].getFillColor() == sf::Color::Cyan)
+                        this->points += 5;
+                    else  if (this->enemies_left[i].getFillColor() == sf::Color::Red)
+                        this->points += 3;
+                    else  if (this->enemies_left[i].getFillColor() == sf::Color::Green)
+                        this->points += 1;
+                    std::cout << "Points: " << this->points << "\n";
+                    */
+
+                    //delete the enemy
+                    this->updateScore();
+                    deleted = true;
+                    this->enemies_left.erase(this->enemies_left.begin() + i);
+
+                }
+            }
+        }
+    }
+    else {
+        this->mouseHeld = false;
+    }
+
+
+
+
+}
+void Game::updateEnemies_bottom()
+{
+    /**
+    @return void
+    updates the enemy spawn timer and spawns enemies
+    when the total amount of enemies is smaller than the maximum
+    moves the enemies down
+    removes the enemies at the edger of the screen
+    **/
+    /// update the timer for enemy spawning
+    if (this->enemies_bottom.size() < this->maxEnemies)
+    {
+        if (this->enemySpawnTimer >= this->enemySpawnTimerMax)
+        {//spawn the enemy and reset the timer
+            this->spawnEnemy_bottom();
+
+            this->enemySpawnTimer = 0.f;
+        }
+        else
+            this->enemySpawnTimer += 1.f;
+    }
+    //moving and uodateting enemies
+
+    for (int i = 0;i < this->enemies_bottom.size();i++)
+    {
+        bool deleted = false;
+
+        this->enemies_bottom[i].move(0.f, -5.f);
+
+        if (this->enemies_bottom[i].getPosition().y+this->enemies_bottom[i].getLocalBounds().height < 0)
+        {
+            this->enemies_bottom.erase(this->enemies_bottom.begin() + i);
+            
+
+        }
+
+    }
+    bool deleted = false;
+    for (size_t i = 0;i < this->enemies_bottom.size() && deleted == false;i++)
+    {
+        if (this->enemies_bottom[i].getGlobalBounds().intersects(this->player->getBounds()))
+        {
+            this->enemies_bottom.erase(this->enemies_bottom.begin() + i);
+            deleted = true;
+            std::cout << "hit" << "\n";
+            this->player->loseHp(1);
+            this->updateHealthBar();
+        }
+    }
+    //check if clicked upon
+    this->mouseHeld == false;
+    if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+    {
+        if (this->mouseHeld == false)
+        {
+            this->mouseHeld = true;
+            bool deleted = false;
+            for (size_t i = 0; i < this->enemies_bottom.size() && deleted == false; i++)
+            {
+
+
+                if (this->enemies_bottom[i].getGlobalBounds().contains(this->mousePosView))
+                {
+
+                    //gain points
+                    /*
+                    if (this->enemies_bottom[i].getFillColor() == sf::Color::Magenta)
+                        this->points += 10;
+                    else  if (this->enemies_bottom[i].getFillColor() == sf::Color::Blue)
+                        this->points += 7;
+                    else if (this->enemies_bottom[i].getFillColor() == sf::Color::Cyan)
+                        this->points += 5;
+                    else  if (this->enemies_bottom[i].getFillColor() == sf::Color::Red)
+                        this->points += 3;
+                    else  if (this->enemies_bottom[i].getFillColor() == sf::Color::Green)
+                        this->points += 1;
+                    std::cout << "Points: " << this->points << "\n";
+                    */
+
+                    //delete the enemy
+                    this->updateScore();
+                    deleted = true;
+                    this->enemies_bottom.erase(this->enemies_bottom.begin() + i);
+
+                }
+            }
+        }
+    }
+    else {
+        this->mouseHeld = false;
+    }
+
+
+
+
+}
+void Game::updateEnemies_right()
+{
+    /**
+    @return void
+    updates the enemy spawn timer and spawns enemies
+    when the total amount of enemies is smaller than the maximum
+    moves the enemies down
+    removes the enemies at the edger of the screen
+    **/
+    /// update the timer for enemy spawning
+    if (this->enemies_right.size() < this->maxEnemies)
+    {
+        if (this->enemySpawnTimer >= this->enemySpawnTimerMax)
+        {//spawn the enemy and reset the timer
+            this->spawnEnemy_right();
+
+            this->enemySpawnTimer = 0.f;
+        }
+        else
+            this->enemySpawnTimer += 1.f;
+    }
+    //moving and uodateting enemies
+
+    for (int i = 0;i < this->enemies_right.size();i++)
+    {
+        bool deleted = false;
+
+        this->enemies_right[i].move(-5.f, 0.f);
+
+        if (this->enemies_right[i].getPosition().x + this->enemies_right[i].getLocalBounds().width < 0)
+        {
+            this->enemies_right.erase(this->enemies_right.begin() + i);
+            
+
+        }
+
+    }
+    bool deleted = false;
+    for (size_t i = 0;i < this->enemies_right.size() && deleted == false;i++)
+    {
+        if (this->enemies_right[i].getGlobalBounds().intersects(this->player->getBounds()))
+        {
+            this->enemies_right.erase(this->enemies_right.begin() + i);
+            deleted = true;
+            std::cout << "hit" << "\n";
+            this->player->loseHp(1);
+            this->updateHealthBar();
+        }
+    }
+    //check if clicked upon
+    this->mouseHeld == false;
+    if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+    {
+        if (this->mouseHeld == false)
+        {
+            this->mouseHeld = true;
+            bool deleted = false;
+            for (size_t i = 0; i < this->enemies_right.size() && deleted == false; i++)
+            {
+
+
+                if (this->enemies_right[i].getGlobalBounds().contains(this->mousePosView))
+                {
+
+                    //gain points
+                    /*
+                    if (this->enemies_right[i].getFillColor() == sf::Color::Magenta)
+                        this->points += 10;
+                    else  if (this->enemies_right[i].getFillColor() == sf::Color::Blue)
+                        this->points += 7;
+                    else if (this->enemies_right[i].getFillColor() == sf::Color::Cyan)
+                        this->points += 5;
+                    else  if (this->enemies_right[i].getFillColor() == sf::Color::Red)
+                        this->points += 3;
+                    else  if (this->enemies_right[i].getFillColor() == sf::Color::Green)
+                        this->points += 1;
+                    std::cout << "Points: " << this->points << "\n";
+                    */
+
+                    //delete the enemy
+                    
+                    this->updateScore();
+                    deleted = true;
+                    this->enemies_right.erase(this->enemies_right.begin() + i);
+
+                }
+            }
+        }
+    }
+    else {
+        this->mouseHeld = false;
+    }
+
+
+
+
+}
+void Game::renderWorld()
+{
+    this->window->draw(this->worldBackground);
+}
 void Game::pollEvents()
 {
     //event polling
@@ -208,8 +665,13 @@ void Game::update()
     {
         this->updateMousePositions();
 
-        this->updateText();
-        this->updateEnemies();
+        //this->updateText();
+        this->updateEnemies_top();
+        this->updateEnemies_bottom();
+        this->updateEnemies_left();
+        this->updateEnemies_right();
+        this->updateInput();
+        //this->updateScore();
     }
     if(this->health<=0)
     {
@@ -220,7 +682,19 @@ void Game::update()
 
 void Game::renderEnemies(sf::RenderTarget& target)
 {
-    for (auto& e : this->enemies)
+    for (auto& e : this->enemies_top)
+    {
+        target.draw(e);
+    }
+    for (auto& e : this->enemies_bottom)
+    {
+        target.draw(e);
+    }
+    for (auto& e : this->enemies_left)
+    {
+        target.draw(e);
+    }
+    for (auto& e : this->enemies_right)
     {
         target.draw(e);
     }
@@ -230,6 +704,11 @@ void Game::renderEnemies(sf::RenderTarget& target)
 void Game::renderText(sf::RenderTarget& target)
 {
     target.draw(this->uiText);
+}
+
+void Game::renderHealthBar(sf::RenderTarget& target)
+{
+    target.draw(this->playerHpBar);
 }
 
 void Game::render()
@@ -242,64 +721,234 @@ void Game::render()
     * renders the game objects
     */
     this->window->clear();
+    this->renderWorld();
+
+    //Draw all the stuffs
+    this->player->render(*this->window);
+
 
     //draw game obj
    
     this->renderEnemies(*this->window);
     this->renderText(*this->window);
-
+    this->renderHealthBar(*this->window);
 
     this->window->display();
     
 
 
 }
-void Game::spawnEnemy()
+void Game::spawnEnemy_top()
 {
     /*
     * Spawns enemies and sets their color and positions
     * -sets a random position
     * -sets a random color
-    * -adds enemy to the vectpr
+    * -adds enemy_top to the vectpr
     * 
     */
-    this->enemy.setPosition(
-      static_cast<float>  (rand() % static_cast<int>(this->window->getSize().x - this->enemy.getSize().x)),0.f);
-    //randomize enemy type
-    int type = rand() % 5;
+    this->enemy_top.setPosition(
+        static_cast<float>  (rand() % static_cast<int>(this->window->getSize().x - this->enemy_top.getGlobalBounds().width)), 0.f);
+    //randomize enemy_top type
+    int type = rand() % 6;
     switch (type)
     {
     case 0:
-        this->enemy.setFillColor(sf::Color::Magenta);
-        this->enemy.setSize(sf::Vector2f(10.f, 10.f));
+        this->enemy_top.setTexture(texture1, true);// this->enemy_top.setFillColor(sf::Color::Magenta);
+       // this->enemy_top.setSize(sf::Vector2f(10.f, 10.f));
+        
         break;
     case 1:
-        this->enemy.setFillColor(sf::Color::Blue);
-        this->enemy.setSize(sf::Vector2f(30.f, 30.f));
+        this->enemy_top.setTexture(texture2, true); //  this->enemy_top.setFillColor(sf::Color::Blue);
+        //this->enemy_top.setSize(sf::Vector2f(30.f, 30.f));
         break;
     case 2:
-        this->enemy.setFillColor(sf::Color::Red);
-        this->enemy.setSize(sf::Vector2f(50.f, 50.f));
+        this->enemy_top.setTexture(texture3, true); //this->enemy_top.setFillColor(sf::Color::Red);
+       // this->enemy_top.setSize(sf::Vector2f(50.f, 50.f));
         break;
     case 3:
-        this->enemy.setFillColor(sf::Color::Cyan);
-        this->enemy.setSize(sf::Vector2f(70.f, 70.f));
+        this->enemy_top.setTexture(texture4, true); //  this->enemy_top.setFillColor(sf::Color::Cyan);
+      //  this->enemy_top.setSize(sf::Vector2f(70.f, 70.f));
         break;
     case 4:
-        this->enemy.setFillColor(sf::Color::Green);
-        this->enemy.setSize(sf::Vector2f(100.f, 100.f));
+        this->enemy_top.setTexture(texture5, true);// this->enemy_top.setFillColor(sf::Color::Green);
+       // this->enemy_top.setSize(sf::Vector2f(100.f, 100.f));
         break;
-    default:
-        this->enemy.setFillColor(sf::Color::Yellow);
-        this->enemy.setSize(sf::Vector2f(100.f, 100.f));
+    case 5:
+        this->enemy_top.setTexture(texture6, true); //this->enemy_top.setFillColor(sf::Color::Yellow);
+       // this->enemy_top.setSize(sf::Vector2f(100.f, 100.f));
         break;
         
     }
     
   
 
-    //spawn the enemy
-    this->enemies.push_back(this->enemy);
+    //spawn the enemy_top
+    this->enemies_top.push_back(this->enemy_top);
+
+    //remove enemies 
+
+}
+void Game::spawnEnemy_bottom()
+{
+    /*
+    * Spawns enemies and sets their color and positions
+    * -sets a random position
+    * -sets a random color
+    * -adds enemy_bottom to the vectpr
+    *
+`    */
+    this->enemy_bottom.setPosition(
+          static_cast<float>  (rand() % static_cast<int>(this->window->getSize().x - this->enemy_bottom.getGlobalBounds().width)),this->window->getSize().y-this->enemy_bottom.getGlobalBounds().height);
+    //randomize enemy_bottom typl
+    int type = rand() % 6;
+    switch (type)
+    {
+    case 0:
+        this->enemy_bottom.setTexture(texture1, true); //this->enemy_bottom.setFillColor(sf::Color::Magenta);
+     // this->enemy_bottom.setSize(sf::Vector2f(10.f, 10.f));
+        
+        break;
+    case 1:
+        this->enemy_bottom.setTexture(texture2, true);// this->enemy_bottom.setFillColor(sf::Color::Blue);
+      //  this->enemy_bottom.setSize(sf::Vector2f(30.f, 30.f));
+        break;
+    case 2:
+        this->enemy_bottom.setTexture(texture3, true); // this->enemy_bottom.setFillColor(sf::Color::Red);
+      //  this->enemy_bottom.setSize(sf::Vector2f(50.f, 50.f));
+        break;
+    case 3:
+        this->enemy_bottom.setTexture(texture4, true); //  this->enemy_bottom.setFillColor(sf::Color::Cyan);
+      //  this->enemy_bottom.setSize(sf::Vector2f(70.f, 70.f));
+        break;
+    case 4:
+        this->enemy_bottom.setTexture(texture5, true);
+       // this->enemy_bottom.setFillColor(sf::Color::Green);
+      //  this->enemy_bottom.setSize(sf::Vector2f(100.f, 100.f));
+        break;
+    case 5:
+       // this->enemy_bottom.setFillColor(sf::Color::Yellow);
+      //  this->enemy_bottom.setSize(sf::Vector2f(100.f, 100.f));
+        this->enemy_bottom.setTexture(texture6, true);
+        break;
+
+    }
+
+
+
+    //spawn the enemy_bottom
+    this->enemies_bottom.push_back(this->enemy_bottom);
+
+    //remove enemies 
+
+}
+void Game::spawnEnemy_left()
+{
+    /*
+    * Spawns enemies and sets their color and positions
+    * -sets a random position
+    * -sets a random color
+    * -adds enemy_bottom to the vectpr
+    *
+`    */
+    this->enemy_left.setPosition(
+       0.f,
+         static_cast<float>  (rand() % static_cast<int>(this->window->getSize().y - this->enemy_left.getGlobalBounds().height)));
+    //randomize enemy_bottom type
+    int type = rand() % 5;
+    switch (type)
+    {
+    case 0:
+        this->enemy_left.setTexture(texture1, true); //this->enemy_left.setFillColor(sf::Color::Magenta);
+        //this->enemy_left.setSize(sf::Vector2f(10.f, 10.f));
+      
+        break;
+    case 1:
+        this->enemy_left.setTexture(texture2, true); // this->enemy_left.setFillColor(sf::Color::Blue);
+       // this->enemy_left.setSize(sf::Vector2f(30.f, 30.f));
+        break;
+    case 2:
+        this->enemy_left.setTexture(texture3, true);// this->enemy_left.setFillColor(sf::Color::Red);
+      //  this->enemy_left.setSize(sf::Vector2f(50.f, 50.f));
+        break;
+    case 3:
+        this->enemy_left.setTexture(texture4, true);// this->enemy_left.setFillColor(sf::Color::Cyan);
+     //   this->enemy_left.setSize(sf::Vector2f(70.f, 70.f));
+        break;
+    case 4:
+        this->enemy_left.setTexture(texture5, true);//  this->enemy_left.setFillColor(sf::Color::Green);
+      //  this->enemy_left.setSize(sf::Vector2f(100.f, 100.f));
+        break;
+    case 5:
+        this->enemy_left.setTexture(texture6, true); //this->enemy_left.setFillColor(sf::Color::Yellow);
+       // this->enemy_left.setSize(sf::Vector2f(100.f, 100.f));
+        break;
+
+    }
+
+
+
+    //spawn the enemy_bottom
+    this->enemies_left.push_back(this->enemy_left);
+
+    //remove enemies 
+
+}
+void Game::spawnEnemy_right()
+{
+    /*
+    * Spawns enemies and sets their color and positions
+    * -sets a random position
+    * -sets a random color
+    * -adds enemy_bottom to the vectpr
+    *
+`    */
+    this->enemy_right.setPosition(
+        this->window->getSize().x ,
+        static_cast<float>  (rand() % static_cast<int>(this->window->getSize().y - this->enemy_right.getGlobalBounds().height)));
+    //randomize enemy_bottom type
+    int type = rand() % 6;
+    
+    switch (type)
+    {
+    case 0:
+       // this->enemy_right.setFillColor(sf::Color::Magenta);
+        //this->enemy_right.setSize(sf::Vector2f(10.f, 10.f));
+        this->enemy_right.setTexture(texture1,true);
+        
+        break;
+    case 1:
+       // this->enemy_right.setFillColor(sf::Color::Blue);
+        //this->enemy_right.setSize(sf::Vector2f(30.f, 30.f));
+        this->enemy_right.setTexture(texture2, true);
+        break;
+    case 2:
+        //this->enemy_right.setFillColor(sf::Color::Red);
+        //this->enemy_right.setSize(sf::Vector2f(50.f, 50.f));
+        this->enemy_right.setTexture(texture3, true);
+        break;
+    case 3:
+       // this->enemy_right.setFillColor(sf::Color::Cyan);
+       // this->enemy_right.setSize(sf::Vector2f(70.f, 70.f));
+        this->enemy_right.setTexture(texture4, true);
+        break;
+    case 4:
+       // this->enemy_right.setFillColor(sf::Color::Green);
+        //this->enemy_right.setSize(sf::Vector2f(100.f, 100.f));
+        this->enemy_right.setTexture(texture5, true);
+        break;
+    case 5:
+        //this->enemy_right.setFillColor(sf::Color::Yellow);
+       // this->enemy_right.setSize(sf::Vector2f(100.f, 100.f));
+        this->enemy_right.setTexture(texture6, true);
+        break;
+
+    }
+
+
+
+    //spawn the enemy_bottom
+    this->enemies_right.push_back(this->enemy_right);
 
     //remove enemies 
 
