@@ -1,21 +1,2 @@
-﻿  Game.cpp
-D:\visual\Proiect2.1\Proiect2.1\Game.cpp(44,86): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
-          with
-          [
-              T=unsigned int
-          ]
-D:\visual\Proiect2.1\Proiect2.1\Game.cpp(44,59): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
-          with
-          [
-              T=unsigned int
-          ]
-D:\visual\Proiect2.1\Proiect2.1\Game.cpp(298,21): warning C4553: '==': result of expression not used; did you intend '='?
-D:\visual\Proiect2.1\Proiect2.1\Game.cpp(397,21): warning C4553: '==': result of expression not used; did you intend '='?
-D:\visual\Proiect2.1\Proiect2.1\Game.cpp(493,21): warning C4553: '==': result of expression not used; did you intend '='?
-D:\visual\Proiect2.1\Proiect2.1\Game.cpp(589,21): warning C4553: '==': result of expression not used; did you intend '='?
-D:\visual\Proiect2.1\Proiect2.1\Game.cpp(907,32): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
-          with
-          [
-              T=unsigned int
-          ]
+﻿  Boss.cpp
   Proiect2.1.vcxproj -> D:\visual\Proiect2.1\x64\Debug\Proiect2.1.exe

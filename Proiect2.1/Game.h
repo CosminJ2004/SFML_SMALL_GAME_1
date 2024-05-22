@@ -8,7 +8,9 @@
 #include <vector>
 #include <ctime>
 #include <sstream>
+#include <cstddef>
 #include "Player.h"
+#include "Boss.h"
 /*
 Class that acts like the game engine
 Wrapper class
@@ -17,6 +19,14 @@ class Game
 {
 private:
 	//variables
+	// float enemySpawnTimer;
+	float enemySpawnTimerMax;
+	float enemySpawnTimer;
+	int maxEnemies;
+	bool mouseHeld1;
+	bool mouseHeld2;
+	bool mouseHeld3;
+	bool mouseHeld4;
 	//window
 	sf::RenderWindow* window;
 	sf::VideoMode videoMode;
@@ -32,16 +42,31 @@ private:
 	sf::Text uiText;
 	sf::Music music;
 
+	
+	sf::Texture worldBackgroundTex;
+	Player* player;
+	Boss* boss;
+
+	sf::Sprite bullet;
+	sf::IntRect currentFrame;
+	sf::IntRect enemyRect;
+	sf::Texture bullet_texture;
+	
+	std::vector<sf::Sprite> enemies_top;
+	std::vector <sf::Sprite> enemies_bottom;
+	std::vector < sf::Sprite> enemies_left;
+	std::vector <sf::Sprite> enemies_right;
+	sf::Sprite enemy_top;
+	sf::Sprite enemy_bottom;
+	sf::Sprite enemy_left;
+	sf::Sprite enemy_right;
 	sf::Texture texture1;
 	sf::Texture texture2;
 	sf::Texture texture3;
 	sf::Texture texture4;
 	sf::Texture texture5;
 	sf::Texture texture6;
-	sf::Texture worldBackgroundTex;
-	Player* player;
 
-	
 	sf::Text pointText;
 
 	sf::Text gameOverText;
@@ -54,21 +79,8 @@ private:
 	int points;
 	int counter;
 	int health;
-	float enemySpawnTimer;
-	float enemySpawnTimerMax;
-	int maxEnemies;
-	bool mouseHeld;
+	
 
-
-	//game objects
-	std::vector<sf::Sprite> enemies_top;
-	std::vector < sf::Sprite> enemies_bottom;
-	std::vector < sf::Sprite> enemies_left;
-	std::vector < sf::Sprite> enemies_right;
-	sf::Sprite enemy_top;
-	sf::Sprite enemy_bottom;
-	sf::Sprite enemy_left;
-	sf::Sprite enemy_right;
 
 	sf::Sprite worldBackground;
 
@@ -76,10 +88,7 @@ private:
 	//private functions
 	void initializeVariables();
 	void initWindow();
-	void initEnemies_top();
-	void initEnemies_bottom();
-	void initEnemies_left();
-	void initEnemies_right();
+	
 	void initFonts();
 	void initText();
 	void initMusic();
@@ -87,7 +96,16 @@ private:
 	void initWorld();
 	void initHealthBar();
 	void initScore();
-
+	
+	void initBoss();
+	void spawnEnemy_top();
+	void spawnEnemy_bottom();
+	void spawnEnemy_left();
+	void spawnEnemy_right();
+	void initEnemies_top();
+	void initEnemies_bottom();
+	void initEnemies_left();
+	void initEnemies_right();
 	
 
 public:
@@ -100,32 +118,31 @@ public:
 
 
 	//Functions
-	void spawnEnemy_top();
-	void spawnEnemy_bottom();
-	void spawnEnemy_left();
-	void spawnEnemy_right();
+	
 	
 	void pollEvents();
 	
 	void updateMousePositions();
 	//void updateText();
+	
+	void updateHealthBar();
+	void updateScore();
+	void updatePlayer();
 	void updateEnemies_top();
 	void updateEnemies_bottom();
 	void updateEnemies_left();
 	void updateEnemies_right();
-	void updateHealthBar();
-	void updateScore();
-
 	void updateInput();
 	void update();
+	void drawBullet(sf::Vector2f, sf::Vector2f);
 
-	void renderEnemies(sf::RenderTarget& target);
+	
 	void renderText(sf::RenderTarget& target);
 	void renderWorld();
 	void renderHealthBar(sf::RenderTarget& target);
-	
-
-
+	void renderEnemies(sf::RenderTarget& target);
+	void renderBullet(sf::RenderTarget& target);
+	void draw(sf::RenderWindow& window) const;
 	void render();
 
 
