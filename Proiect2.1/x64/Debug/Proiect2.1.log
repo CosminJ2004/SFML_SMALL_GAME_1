@@ -1,2 +1,64 @@
-﻿  Boss.cpp
-  Proiect2.1.vcxproj -> D:\visual\Proiect2.1\x64\Debug\Proiect2.1.exe
+﻿  Bullet.cpp
+  Enemy.cpp
+  Game.cpp
+D:\visual\Proiect2.1\Proiect2.1\Game.cpp(305,32): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
+          with
+          [
+              T=unsigned int
+          ]
+  Player.cpp
+D:\visual\Proiect2.1\Proiect2.1\Player.cpp(19,28): warning C4244: '=': conversion from 'float' to 'T', possible loss of data
+          with
+          [
+              T=int
+          ]
+D:\visual\Proiect2.1\Proiect2.1\Player.cpp(152,28): warning C4244: '=': conversion from 'float' to 'T', possible loss of data
+          with
+          [
+              T=int
+          ]
+D:\visual\Proiect2.1\Proiect2.1\Player.cpp(153,31): warning C4244: '+=': conversion from 'float' to 'T', possible loss of data
+          with
+          [
+              T=int
+          ]
+D:\visual\Proiect2.1\Proiect2.1\Player.cpp(165,29): warning C4244: '=': conversion from 'float' to 'T', possible loss of data
+          with
+          [
+              T=int
+          ]
+D:\visual\Proiect2.1\Proiect2.1\Player.cpp(166,31): warning C4244: '+=': conversion from 'float' to 'T', possible loss of data
+          with
+          [
+              T=int
+          ]
+D:\visual\Proiect2.1\Proiect2.1\Player.cpp(181,29): warning C4244: '=': conversion from 'float' to 'T', possible loss of data
+          with
+          [
+              T=int
+          ]
+D:\visual\Proiect2.1\Proiect2.1\Player.cpp(182,31): warning C4244: '+=': conversion from 'float' to 'T', possible loss of data
+          with
+          [
+              T=int
+          ]
+D:\visual\Proiect2.1\Proiect2.1\Player.cpp(197,29): warning C4244: '=': conversion from 'float' to 'T', possible loss of data
+          with
+          [
+              T=int
+          ]
+D:\visual\Proiect2.1\Proiect2.1\Player.cpp(198,31): warning C4244: '+=': conversion from 'float' to 'T', possible loss of data
+          with
+          [
+              T=int
+          ]
+  Proiect2.1.cpp
+D:\visual\Proiect2.1\Proiect2.1\Proiect2.1.cpp(11,21): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+  Generating Code...
+D:\visual\Proiect2.1\Proiect2.1\Player.cpp(64): warning C4172: returning address of local variable or temporary: anim_switch
+Player.obj : error LNK2005: "public: __cdecl Bullet::Bullet(float,float)" (??0Bullet@@QEAA@MM@Z) already defined in Bullet.obj
+Bullet.obj : error LNK2019: unresolved external symbol "public: virtual __cdecl Bullet::~Bullet(void)" (??1Bullet@@UEAA@XZ) referenced in function "public: virtual void * __cdecl Bullet::`scalar deleting destructor'(unsigned int)" (??_GBullet@@UEAAPEAXI@Z)
+Player.obj : error LNK2001: unresolved external symbol "public: virtual __cdecl Bullet::~Bullet(void)" (??1Bullet@@UEAA@XZ)
+Game.obj : error LNK2019: unresolved external symbol "public: void __cdecl Game::drawBullet(class sf::Vector2<float>,class sf::Vector2<float>)" (?drawBullet@Game@@QEAAXV?$Vector2@M@sf@@0@Z) referenced in function "public: void __cdecl Game::updateEnemies_bottom(void)" (?updateEnemies_bottom@Game@@QEAAXXZ)
+Game.obj : error LNK2019: unresolved external symbol "public: void __cdecl Game::draw(class sf::RenderWindow &)const " (?draw@Game@@QEBAXAEAVRenderWindow@sf@@@Z) referenced in function "public: void __cdecl Game::render(void)" (?render@Game@@QEAAXXZ)
+D:\visual\Proiect2.1\x64\Debug\Proiect2.1.exe : fatal error LNK1120: 3 unresolved externals

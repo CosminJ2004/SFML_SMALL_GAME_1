@@ -11,6 +11,7 @@
 #include <cstddef>
 #include "Player.h"
 #include "Boss.h"
+#include "Bullet.h"
 /*
 Class that acts like the game engine
 Wrapper class
@@ -46,8 +47,9 @@ private:
 	sf::Texture worldBackgroundTex;
 	Player* player;
 	Boss* boss;
+	Bullet* bullet;
 
-	sf::Sprite bullet;
+	
 	sf::IntRect currentFrame;
 	sf::IntRect enemyRect;
 	sf::Texture bullet_texture;

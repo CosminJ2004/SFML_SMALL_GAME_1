@@ -68,7 +68,7 @@ void Game::initPlayer()
     this->player = new Player();
     this->player->setPosition(10.f, 10.f);
     this->player->setHp(100);
-
+    
     
 
 }
@@ -79,11 +79,7 @@ void Game::initEnemies_top()
 
 
     this->enemy_top.setPosition(10.f, 10.f);
-    //this->enemy_top.setSize(sf::Vector2f(100.f, 100.f));
-
-  //  this->enemy_top.setFillColor(sf::Color::Cyan);
-    //this->enemy_top.setOutlineColor(sf::Color::Green);
-    //this->enemy_top.setOutlineThickness(1.f);
+   
 
 
 }
@@ -91,11 +87,7 @@ void Game::initEnemies_bottom()
 {
     texture2.loadFromFile("Textures/enemy2.png");
     this->enemy_bottom.setPosition(10.f, 10.f);
-    // this->enemy_bottom.setSize(sf::Vector2f(100.f, 100.f));
-
-   //  this->enemy_bottom.setFillColor(sf::Color::Cyan);
-     //this->enemy_top.setOutlineColor(sf::Color::Green);
-     //this->enemy_top.setOutlineThickness(1.f);
+    
 
 
 }
@@ -104,11 +96,7 @@ void Game::initEnemies_left()
     texture3.loadFromFile("Textures/enemy3.png");
     this->enemy_left.setPosition(10.f, 10.f);
 
-    // this->enemy_left.setSize(sf::Vector2f(100.f, 100.f));
-
-    // this->enemy_left.setFillColor(sf::Color::Cyan);
-     //this->enemy_top.setOutlineColor(sf::Color::Green);
-     //this->enemy_top.setOutlineThickness(1.f);
+    
 
 
 }
@@ -117,15 +105,9 @@ void Game::initEnemies_right()
     texture4.loadFromFile("Textures/enemy4.png");
     texture5.loadFromFile("Textures/enemy5.png");
     texture6.loadFromFile("Textures/enemy6.png");
-    bullet_texture.loadFromFile("Textures/bullet.png");
+   
     this->enemy_right.setPosition(10.f, 10.f);
-    //  this->enemy_right.setSize(sf::Vector2f(100.f, 100.f));
-
-    //  this->enemy_right.setFillColor(sf::Color::Cyan);
-      //this->enemy_top.setOutlineColor(sf::Color::Green);
-      //this->enemy_top.setOutlineThickness(1.f);
-
-
+   
 }
 
 
@@ -421,6 +403,7 @@ void Game::updateHealthBar()
 
 
 }
+/*
 void Game::drawBullet(sf::Vector2f pos1, sf::Vector2f pos2)
 {
     this->bullet.setTexture(this->bullet_texture);
@@ -429,11 +412,8 @@ void Game::drawBullet(sf::Vector2f pos1, sf::Vector2f pos2)
     this->bullet.setPosition(pos1.x, pos2.y);
     this->draw(*this->window);
 }
-void Game::draw(sf::RenderWindow& window) const {
-    
-        window.draw(this->bullet);
-    
-}
+*/
+
 
 void Game::updateScore()
 {
@@ -535,15 +515,14 @@ void Game::updateEnemies_top()
             for (size_t i = 0; i < this->enemies_top.size() && deleted_1 == false; i++)
             {
 
-
-
                 if (this->enemies_top[i].getGlobalBounds().contains(this->mousePosView))
                 {
 
                     
 
                    //delete the enemy
-                    this->drawBullet(this->player->getPos(), this->enemies_top[i].getPosition());
+                    //this->drawBullet(this->player->getPos(), this->enemies_top[i].getPosition());
+                    this->player->shoot(this->player->getPos().x,this->player->getPos().y,this->enemies_top[i].getPosition());
                     this->updateScore();
                     deleted_1 = true;
                     this->enemies_top.erase(this->enemies_top.begin() + i);
@@ -883,11 +862,7 @@ void Game::renderHealthBar(sf::RenderTarget& target)
     target.draw(this->playerHpBar);
    
 }
-void Game::renderBullet(sf::RenderTarget& target)
-{
-    target.draw(this->bullet);
-   
-}
+
 void Game::render()
 {
     /*
@@ -903,6 +878,7 @@ void Game::render()
     //Draw all the stuffs
     this->player->render(*this->window);
    this->boss->render(*this->window);
+   this->player->render(*this->window);
     this->draw(*this->window);
 
     //draw game obj

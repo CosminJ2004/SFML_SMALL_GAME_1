@@ -36,7 +36,10 @@ void Player::initSprite()
 	//Resize the sprite
 	this->sprite.scale(2.5f,2.5f);
 }
-
+Bullet::Bullet(float x, float y) : x(x), y(y)
+{
+	this->sprite.setPosition(x, y);
+}
 Player::Player()
 {
 	this->initVariables();
@@ -44,6 +47,7 @@ Player::Player()
 	this->initSprite();
 	this->initAnimations();
 }
+
 
 Player::~Player()
 {
@@ -226,6 +230,8 @@ void Player::updateAttack()
 //Functions
 void Player::update()
 {
+	
+	this->bullet.move(x, y, this->target_x, this->target_y);
 	this->updateAttack();
 	this->updateMovement();
 	this->updateAnimations();
@@ -235,3 +241,13 @@ void Player::render(sf::RenderTarget& target)
 {
 	target.draw(this->sprite);
 }
+void Player::shoot(float x, float y,sf::Vector2f target) {
+	this->target_x = target.x;
+	this->target_y = target.y;
+	Bullet bullet(x, y);
+	bullets.push_back(bullet);
+
+	
+}
+
+

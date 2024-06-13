@@ -3,6 +3,7 @@
 #include<SFML/Graphics.hpp>
 #include<SFML/System.hpp>
 #include<iostream>
+#include "Bullet.h"
 enum PLAYER_ANIMATION_STATES { IDLE = 0, MOVING_LEFT, MOVING_RIGHT, MOVING_UP};
 class Player
 {
@@ -16,6 +17,8 @@ private:
 	float velocityMin;
 	float attackCooldown;
 	float attackCooldownMax;
+	float x, y;
+	float target_x, target_y;
 
 	//Animation
 	sf::Vector2f velocity;
@@ -32,6 +35,10 @@ private:
 	void initTexture();
 	void initSprite();
 	void initAnimations();
+	
+
+	std::vector<Bullet> bullets;
+	Bullet bullet;
 
 
 public:
@@ -45,6 +52,8 @@ public:
 	const int& getHpMax() const;
 	const bool& getAnimSwitch();
 
+	void shoot(float x, float y,sf::Vector2f target);
+	void draw();
 
 	void updateMovement();
 	void updateAnimations();
